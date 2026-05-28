@@ -84,6 +84,44 @@ public class InscripcionDAO {
         return lista;
     }
 
+    public void actualizarInscripcion(String idAtleta, String idCompetencia, String ciEntren,
+            String resultado, int medallas, LocalDate fechaFinReal) {
+        String sql = "UPDATE INSCRIPCION SET ci_entren = ?, resultado = ?, cant_medallas = ?, fecha_fin_real = ? "
+                + "WHERE id_atleta = ? AND id_comp = ?";
+        try (Connection conn = ConnectionManager.getInstance().retrieveConnection(); PreparedStatement stmt = conn.prepareStatement(sql)) {
+            stmt.setString(1, ciEntren);
+            stmt.setString(2, resultado);
+            stmt.setInt(3, medallas);
+            stmt.setDate(4, fechaFinReal != null ? java.sql.Date.valueOf(fechaFinReal) : null);
+            stmt.setString(5, idAtleta);
+            stmt.setString(6, idCompetencia);
+            stmt.executeUpdate();
+        } catch (SQLException e) {
+            throw new RuntimeException("Error al actualizar inscripción: " + e.getMessage(), e);
+        }
+    }
+
+    public Object[] obtenerDatosInscripcion(String idAtleta, String idCompetencia) {
+        String sql = "SELECT ci_entren, resultado, cant_medallas, fecha_fin_real "
+                + "FROM INSCRIPCION WHERE id_atleta = ? AND id_comp = ?";
+        try (Connection conn = ConnectionManager.getInstance().retrieveConnection(); PreparedStatement stmt = conn.prepareStatement(sql)) {
+            stmt.setString(1, idAtleta);
+            stmt.setString(2, idCompetencia);
+            ResultSet rs = stmt.executeQuery();
+            if (rs.next()) {
+                return new Object[]{
+                    rs.getString("ci_entren"),
+                    rs.getString("resultado"),
+                    rs.getInt("cant_medallas"),
+                    rs.getDate("fecha_fin_real") != null ? rs.getDate("fecha_fin_real").toLocalDate() : null
+                };
+            }
+        } catch (SQLException e) {
+            throw new RuntimeException("Error al obtener inscripción: " + e.getMessage(), e);
+        }
+        return null;
+    }
+
     // Reporte 6: Atletas incompletos
     public ArrayList<Aux.AtletaIncompletoListado> listarAtletasIncompletos() {
         ArrayList<Aux.AtletaIncompletoListado> lista = new ArrayList<>();

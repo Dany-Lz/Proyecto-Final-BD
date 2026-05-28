@@ -23,7 +23,7 @@ public class ListadoEntren extends javax.swing.JDialog {
         initComponents();
         setLocationRelativeTo(parent);
         setTitle(edicion ? "Gestión de Entrenadores" : "Listado de Entrenadores");
-        
+
         txtBuscar.setLimit(11);
 
         entrenadorDAO = new EntrenadorDAO();
@@ -34,10 +34,8 @@ public class ListadoEntren extends javax.swing.JDialog {
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
         lblFecha.setText("Fecha del reporte: " + hoy.format(formatter));
 
-        if (!edicion) {
-            btnModificar.setVisible(false);
-            btnEliminar.setVisible(false);
-        }
+        btnModificar.setVisible(edicion);
+        btnEliminar.setVisible(edicion);
     }
 
     private void crearTabla() {

@@ -153,6 +153,7 @@ public class ListadoInscripcion extends javax.swing.JDialog {
         comboComoetencias = new javax.swing.JComboBox<>();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
+        setResizable(false);
 
         btnBuscar.setFont(new java.awt.Font("Dialog", 1, 12)); // NOI18N
         btnBuscar.setText("Buscar");

@@ -36,7 +36,6 @@ public class ListadoAtletas extends javax.swing.JDialog {
 
         btnModificar.setVisible(edicion);
         btnEliminar.setVisible(edicion);
-
     }
 
     private void crearTabla() {
